@@ -35,19 +35,18 @@ extension="${url##*.}";
 echo "URL=" $url;
 
 echo 80 "Téléchargement et installation"
-if [$uncompress == 'none']
-  then
-    wget -q -O /usr/bin/hdsentinel "$url";
-  else
-    wget -q -O /tmp/hdsentinel.$extension "$url";
-    $uncompress -c /tmp/hdsentinel.$extension > /usr/bin/hdsentinel
+if [ "$uncompress" == "none" ]
+then
+  wget -q -O /usr/bin/hdsentinel "$url";
+else
+  wget -q -O /tmp/hdsentinel.$extension "$url";
+  bash -c "$uncompress -c /tmp/hdsentinel.$extension > /usr/bin/hdsentinel"
 fi
 chmod +x /usr/bin/hdsentinel;
 end=" en erreur";
 
 if [ -f /usr/bin/hdsentinel ]
-  then
+then
   end=" avec succès"
 fi
 echo 100 "Installation"$end
-
