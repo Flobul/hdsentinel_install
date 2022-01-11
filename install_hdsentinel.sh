@@ -14,6 +14,7 @@ then
 elif [ "$arch" == "armv5" ]
 then
   url="https://www.hdsentinel.com/hdslin/armv5/hdsentinelarm";
+  uncompress="none";
 elif [[ "$arch" == "armv7" || "$arch" == "armv7l" ]]
 then
   url="https://www.hdsentinel.com/hdslin/hdsentinel-armv7.gz";
@@ -30,11 +31,17 @@ else
     url="https://www.hdsentinel.com/hdslin/hdsentinel-019c-x64.gz";
   fi
 fi
+extension="${url##*.}";
 echo "URL=" $url;
 
 echo 80 "Téléchargement et installation"
-wget -q -O /tmp/hdsentinel.gz "$url";
-$uncompress -c /tmp/hdsentinel.gz > /usr/bin/hdsentinel
+if [$uncompress == 'none']
+  then
+    wget -q -O /usr/bin/hdsentinel "$url";
+  else
+    wget -q -O /tmp/hdsentinel.$extension "$url";
+    $uncompress -c /tmp/hdsentinel.$extension > /usr/bin/hdsentinel
+fi
 chmod +x /usr/bin/hdsentinel;
 end=" en erreur";
 
@@ -43,3 +50,4 @@ if [ -f /usr/bin/hdsentinel ]
   end=" avec succès"
 fi
 echo 100 "Installation"$end
+
